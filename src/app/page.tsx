@@ -22,11 +22,11 @@ const RootPage = () => {
 				>
 					Auth 🔒
 				</h1>
-				<p className="text-white text-lg">A simple authentication service</p>
+				<p className="text-white text-lg">Um serviço de autenticação simples</p>
 				<div>
 					<LoginButton>
 						<Button variant="secondary" size="lg">
-							Sign in
+							Entrar
 						</Button>
 					</LoginButton>
 				</div>
