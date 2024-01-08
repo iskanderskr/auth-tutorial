@@ -1,0 +1,21 @@
+{
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "always"
+	},
+	"editor.formatOnSave": false,
+	"editor.formatOnPaste": false,
+	"[typescript]": {
+		"editor.formatOnPaste": false,
+		"editor.formatOnSave": false
+	},
+	"[json]": {
+		"editor.formatOnPaste": true,
+		"editor.formatOnSave": true
+	},
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"typescript.tsdk": "node_modules\\.pnpm\\typescript@4.9.5\\node_modules\\typescript\\lib",
+	"typescript.enablePromptUseWorkspaceTsdk": true
+}
