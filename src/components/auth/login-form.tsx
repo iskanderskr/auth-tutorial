@@ -3,6 +3,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
+import FormError from '@/components/shared/form-error'
+import FormSuccess from '@/components/shared/form-success'
+
 import Input from '@/components/ui/input'
 import Button from '@/components/ui/button'
 import {
@@ -21,7 +24,9 @@ import { LoginSchema, LoginSchemaType } from '@/schemas'
 const LoginForm = () => {
 	const form = useForm<LoginSchemaType>({ resolver: zodResolver(LoginSchema) })
 
-	const onSubmit = (data: LoginSchemaType) => {}
+	const onSubmit = (data: LoginSchemaType) => {
+		console.log(data)
+	}
 
 	return (
 		<CardWrapper
@@ -63,6 +68,8 @@ const LoginForm = () => {
 								</FormItem>
 							)}
 						></FormField>
+						<FormError message="{form.formState.errors}" />
+						<FormSuccess message="{form.formState.errors}" />
 						<Button type="submit" className="w-full">
 							Entrar
 						</Button>
