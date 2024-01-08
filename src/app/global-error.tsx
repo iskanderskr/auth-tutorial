@@ -1,7 +1,5 @@
 'use client'
 
-import React from 'react'
-
 type GlobalErrorPageProps = {
 	error: Error & { digest?: string }
 	reset: () => void

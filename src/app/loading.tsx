@@ -1,7 +1,5 @@
-import React from 'react'
-
 const LoadingComponent = () => {
-	return <div>Carregando ...s</div>
+	return <div>Carregando ...</div>
 }
 
 export default LoadingComponent
