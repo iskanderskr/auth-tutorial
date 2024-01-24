@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 
 import FormSuccess from '@/components/shared/form-success'
@@ -21,9 +22,14 @@ import {
 import CardWrapper from '@/components/auth/card-wrapper'
 
 import { LoginSchema, LoginSchemaType } from '@/schemas'
+import { nextAuthErrorFormatter } from '@/lib/utils'
 import { login, Response } from '@/actions/login'
 
 const LoginForm = () => {
+	const searchParams = useSearchParams()
+	const urlError = nextAuthErrorFormatter(searchParams.get('error'))
+	searchParams.get('error') === 'OAuthAccountNotLinked' ? 'E-mail já está em uso' : ''
+
 	const [isPending, startTransition] = useTransition()
 	const [response, setResponse] = useState<Response>()
 
@@ -81,7 +87,9 @@ const LoginForm = () => {
 								</FormItem>
 							)}
 						></FormField>
-						<FormError message={response?.type === 'error' ? response.message : ''} />
+						<FormError
+							message={response?.type === 'error' ? response.message : urlError ?? ''}
+						/>
 						<FormSuccess
 							message={response?.type === 'success' ? response.message : ''}
 						/>

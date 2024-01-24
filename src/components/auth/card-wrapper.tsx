@@ -5,7 +5,7 @@ import Header from '@/components/auth/header'
 import Social from '@/components/auth/social'
 
 type CardWrapperProps = {
-	children: React.ReactNode
+	children?: React.ReactNode
 	headerLabel: string
 	backButtonLabel: string
 	backButtonHref: string

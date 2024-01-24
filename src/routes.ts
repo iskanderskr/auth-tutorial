@@ -9,7 +9,7 @@ export const publicRoutes = ['/']
  * As rotas irão redirecionar o usuário para a rota /settings
  * @type {string[]}
  */
-export const authRoutes = ['/auth/login', '/auth/register']
+export const authRoutes = ['/auth/login', '/auth/register', '/auth/error']
 
 /**
  * O prefixo da biblioteca Auth.js
