@@ -2,7 +2,7 @@
  * Array de rotas que podem ser acessadas sem autenticação
  * @type {string[]}
  */
-export const publicRoutes = ['/']
+export const publicRoutes = ['/', '/auth/new-verification']
 
 /**
  * Array de rotas usadas para a autenticação
