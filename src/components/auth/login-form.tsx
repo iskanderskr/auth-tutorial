@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useTransition } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSearchParams } from 'next/navigation'
+import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
+import Link from 'next/link'
 
 import FormSuccess from '@/components/shared/form-success'
 import FormError from '@/components/shared/form-error'
@@ -83,6 +84,14 @@ const LoginForm = () => {
 											disabled={isPending}
 										/>
 									</FormControl>
+									<Button
+										size="sm"
+										variant="link"
+										className="px-0 font-normal"
+										asChild
+									>
+										<Link href="/auth/reset">Esqueci minha senha</Link>
+									</Button>
 									<FormMessage />
 								</FormItem>
 							)}

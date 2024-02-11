@@ -14,3 +14,9 @@ export const RegisterSchema = z.object({
 })
 
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>
+
+export const ResetSchema = z.object({
+	email: z.string().email({ message: 'E-mail obrigatório' }).default(''),
+})
+
+export type ResetSchemaType = z.infer<typeof ResetSchema>
