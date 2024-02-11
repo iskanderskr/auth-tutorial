@@ -3,6 +3,8 @@
 import bcrypt from 'bcryptjs'
 
 import { RegisterSchema, RegisterSchemaType } from '@/schemas'
+import { generateVerificationToken } from '@/lib/tokens'
+import { sendVerificationEmail } from '@/lib/mail'
 import { getUserByEmail } from '@/data/user'
 import { db } from '@/lib/db'
 
@@ -34,5 +36,8 @@ export const register = async (values: RegisterSchemaType): Promise<Response> =>
 		},
 	})
 
-	return { statusCode: 200, type: 'success', message: 'Login realizado com sucesso' }
+	const verificationToken = await generateVerificationToken(email)
+	await sendVerificationEmail(verificationToken.email, verificationToken.token)
+
+	return { statusCode: 200, type: 'success', message: 'E-mail de confirmação enviado' }
 }

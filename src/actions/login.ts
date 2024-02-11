@@ -3,7 +3,10 @@
 import { AuthError } from 'next-auth'
 
 import { LoginSchema, LoginSchemaType } from '@/schemas'
+import { generateVerificationToken } from '@/lib/tokens'
+import { sendVerificationEmail } from '@/lib/mail'
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes'
+import { getUserByEmail } from '@/data/user'
 import { signIn } from '@/auth'
 
 export type Response = {
@@ -19,6 +22,19 @@ export const login = async (values: LoginSchemaType): Promise<Response> => {
 	}
 
 	const { email, password } = validatedFields.data
+
+	const existingUser = await getUserByEmail(email)
+
+	if (!existingUser || !existingUser.email || !existingUser.password) {
+		return { statusCode: 404, type: 'error', message: 'Credenciais inválidas' }
+	}
+
+	if (!existingUser.emailVerified) {
+		const verificationToken = await generateVerificationToken(existingUser.email)
+		await sendVerificationEmail(verificationToken.email, verificationToken.token)
+
+		return { statusCode: 200, type: 'success', message: 'E-mail de confirmação enviado' }
+	}
 
 	try {
 		await signIn('credentials', {
