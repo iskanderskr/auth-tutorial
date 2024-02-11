@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useTransition } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useSearchParams } from 'next/navigation'
+import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 
 import FormError from '@/components/shared/form-error'
@@ -20,72 +21,38 @@ import {
 
 import CardWrapper from '@/components/auth/card-wrapper'
 
-import { RegisterSchema, RegisterSchemaType } from '@/schemas'
-import { register, Response } from '@/actions/register'
+import { NewPasswordSchema, NewPasswordType } from '@/schemas'
+import { updatePassword, Response } from '@/actions/new-password'
 
-const RegisterForm = () => {
+const NewPasswordForm = () => {
+	const searchParams = useSearchParams()
+	const token = searchParams.get('token') ?? ''
 	const [isPending, startTransition] = useTransition()
 	const [response, setResponse] = useState<Response>()
 
-	const form = useForm<RegisterSchemaType>({ resolver: zodResolver(RegisterSchema) })
+	const form = useForm<NewPasswordType>({ resolver: zodResolver(NewPasswordSchema) })
 
-	const onSubmit = (data: RegisterSchemaType) => {
+	const onSubmit = (data: NewPasswordType) => {
 		startTransition(async () => {
-			setResponse(await register(data))
+			setResponse(await updatePassword(data, token))
 		})
 	}
 
 	return (
 		<CardWrapper
-			headerLabel="Criar uma conta"
+			headerLabel="Criar nova senha"
 			backButtonHref="/auth/login"
-			backButtonLabel="Já possuí uma conta? Clique aqui"
-			showSocial
+			backButtonLabel="Voltar ao login"
 		>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 					<div className="space-y-4">
 						<FormField
 							control={form.control}
-							name="name"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel htmlFor="name">Nome de usuário</FormLabel>
-									<FormControl>
-										<Input
-											{...field}
-											placeholder="john123"
-											disabled={isPending}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						></FormField>
-						<FormField
-							control={form.control}
-							name="email"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel htmlFor="email">Email</FormLabel>
-									<FormControl>
-										<Input
-											{...field}
-											placeholder="john.doe@example.com"
-											type="email"
-											disabled={isPending}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						></FormField>
-						<FormField
-							control={form.control}
 							name="password"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel htmlFor="password">Senha</FormLabel>
+									<FormLabel htmlFor="email">Nova senha</FormLabel>
 									<FormControl>
 										<Input
 											{...field}
@@ -97,13 +64,31 @@ const RegisterForm = () => {
 									<FormMessage />
 								</FormItem>
 							)}
-						></FormField>
+						/>
+						<FormField
+							control={form.control}
+							name="confirmPassword"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel htmlFor="email">Confirmar senha</FormLabel>
+									<FormControl>
+										<Input
+											{...field}
+											placeholder="******"
+											type="password"
+											disabled={isPending}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						<FormError message={response?.type === 'error' ? response.message : ''} />
 						<FormSuccess
 							message={response?.type === 'success' ? response.message : ''}
 						/>
 						<Button type="submit" className="w-full" disabled={isPending}>
-							{isPending ? 'Enviando ...' : 'Registrar'}
+							{isPending ? 'Alterando ...' : 'Alterar senha'}
 						</Button>
 					</div>
 				</form>
@@ -112,4 +97,4 @@ const RegisterForm = () => {
 	)
 }
 
-export default RegisterForm
+export default NewPasswordForm

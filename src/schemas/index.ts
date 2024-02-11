@@ -20,3 +20,23 @@ export const ResetSchema = z.object({
 })
 
 export type ResetSchemaType = z.infer<typeof ResetSchema>
+
+export const NewPasswordSchema = z
+	.object({
+		password: z.string().min(6, { message: 'Precisa ter ao menos 6 caracteres' }).default(''),
+		confirmPassword: z
+			.string()
+			.min(6, { message: 'Precisa ter ao menos 6 caracteres' })
+			.default(''),
+	})
+	.superRefine((values, ctx) => {
+		if (values.password !== values.confirmPassword) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'As senhas não conferem',
+				path: ['confirmPassword'],
+			})
+		}
+	})
+
+export type NewPasswordType = z.infer<typeof NewPasswordSchema>
